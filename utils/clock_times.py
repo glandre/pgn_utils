@@ -1,4 +1,4 @@
-from parse_int import parse_int
+from .parse_int import parse_int
 
 def load_clock_times_simple(contents):
   clock_times = {}
