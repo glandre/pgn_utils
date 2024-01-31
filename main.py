@@ -1,3 +1,5 @@
 from cli_merge_clock_times import cli_merge_clock_times
+from cli_print_parsed_output import cli_print_parsed_output
 
 cli_merge_clock_times()
+# cli_print_parsed_output()

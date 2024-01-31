@@ -1,7 +1,9 @@
 import sys
-from utils.chess_grammar import parse_file_contents, get_game_count, get_move_count
-from utils.clock_times import load_clock_times
-from utils.pgn import to_pgn
+from utils.chess_grammar import parse_file_contents
+from utils.chess_grammar import get_game_count
+from utils.chess_grammar import get_move_count
+from utils.minute_clock_times_game_formatter import MinuteClockTimesGameFormatter
+from utils.pgn import PGN
 
 def cli_merge_clock_times():
   # Read file path from command line
@@ -12,11 +14,8 @@ def cli_merge_clock_times():
   pgn_file = sys.argv[1]
   clock_times_file = sys.argv[2]
 
-  # Print file path
-  # print("Parsing PGN file: " + pgn_file)
-
   parsedoutput = None
-  clock_times = None
+  clock_times_loader = None
 
   with open(pgn_file, 'r') as f:
     # Print file contents
@@ -34,8 +33,12 @@ def cli_merge_clock_times():
   with open(clock_times_file, 'r') as f:
     # Print file contents
     contents = f.read()
-    clock_times = load_clock_times(contents, move_count, separator=",")
+    clock_times_loader = MinuteClockTimesGameFormatter(contents, move_count, separator=",")
 
 
   # Print the first game
-  print(to_pgn(parsedoutput, clock_times))
+  pgn = PGN(clock_times_loader)
+  print(pgn.to_pgn(parsedoutput))
+
+if __name__ == "__main__":
+  cli_merge_clock_times()

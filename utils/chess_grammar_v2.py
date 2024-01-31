@@ -26,6 +26,7 @@ quote = lit(r'"')
 whitespace = lit(' ') | lit('\n')
 tag = reg(r'[\u0021-\u0021\u0023-\u005A\u005E-\u007E]+')
 string = reg(r'[\u0020-\u0021\u0023-\u005A\u005E-\U0010FFFF]+')
+string_including_brackets = reg(r'[\u0020-\u0021\u0023-\u005A\u005E-\U0010FFFF\[\]]+')
 
 # Annotations: [Foo "Super Awesome Information"]
 annotation = '[' >> (tag) << ' ' & (quote >> string << quote) << ']'
@@ -39,14 +40,24 @@ nullmove = lit('--') # Illegal move rarely used in annotations
 
 move = regularmove | longcastle | castle | nullmove
 
+# Parsita does not recognize the '}' character, so we have to escape it
+comment = lit('{') >> string_including_brackets << lit('\}') > (lambda s: s.strip())
+
 # Build up the game
 movenumber = (reg(r'[0-9]+') << '.' << whitespace) > int
-turn = movenumber & (move << whitespace) & (opt(move << whitespace) > handleoptional)
+
+turn = movenumber & \
+  (opt(comment << whitespace) > handleoptional) & \
+  (move << whitespace) & \
+  (opt(comment << whitespace) > handleoptional) & \
+  (opt(move << whitespace) > handleoptional) & \
+  (opt(comment) > handleoptional)
 
 draw = lit('1/2-1/2')
 white = lit('1-0')
 black = lit('0-1')
-outcome = draw | white | black
+unknown = lit('*')
+outcome = draw | white | black | unknown
 
 game = (rep(turn) & outcome) > formatgame
 
@@ -56,8 +67,16 @@ entry = ((annotations << rep(whitespace)) & (game << rep(whitespace))) > formate
 # A file is repeated entries
 file = rep(entry)
 
+def sanitize_pgn(content: str) -> str:
+  # Parsita does not recognize the '}' character, so we have to escape it
+  content = content.replace('}', '/}')
+  
+  print('>>> Sanitized PGN file contents:')
+  print(content)
+  return content
+
 def parse_file_contents(file_contents: str):
-  parsedoutput = file.parse(file_contents)
+  parsedoutput = file.parse(sanitize_pgn(file_contents))
   return parsedoutput.unwrap()
 
 def get_game_count(parsedoutput):
