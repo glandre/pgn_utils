@@ -62,6 +62,12 @@ python3 main.py round_1.pgn round_1_clock_times.txt > output.pgn
 
 ## Development
 
+### Requirements
+
+```
+python3 3.11 or above.
+```
+
 ### Install dependencies
 
 ```
