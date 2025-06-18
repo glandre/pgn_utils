@@ -1,4 +1,4 @@
-# PGN Utils
+# Add Clock Times to PGN games
 
 ## Features
 
@@ -7,16 +7,17 @@
 This utility allows us to insert clock times to moves in a PGN game.
 
 Sources:
-* Is it possible to add clock time to the moves in a Lichess study? https://lichess.org/forum/lichess-feedback/is-it-possible-to-add-clock-time-to-the-moves-in-a-lichess-study
 
-* Parsing PGN Chess Games With Python
+- Is it possible to add clock time to the moves in a Lichess study? https://lichess.org/forum/lichess-feedback/is-it-possible-to-add-clock-time-to-the-moves-in-a-lichess-study
+
+- Parsing PGN Chess Games With Python
+
   - https://medium.com/analytics-vidhya/parsing-pgn-chess-games-with-python-68a2c199665c
   - https://github.com/matteson/parse-pgn-files/blob/main/Parse%20PGN%20files.ipynb
 
-* Parsita
+- Parsita
   - https://pypi.org/project/parsita/1.1.0/
   - https://github.com/drhagen/parsita
-
 
 #### Scenario: Record games from the game sheet after a tournament
 
@@ -57,9 +58,9 @@ python3 main.py round_1.pgn round_1_clock_times.txt > output.pgn
 
 #### Limitations
 
-* Currently supports a single game per run
-* Does not support games containing variations
-* Does not support games containing comments
+- Currently supports a single game per run
+- Does not support games containing variations
+- Does not support games containing comments
 
 #### Testing Data
 
@@ -73,6 +74,7 @@ python3 main.py round_1.pgn round_1_clock_times.txt > output.pgn
 **Input:**
 
 - `data/scenario1/input.pgn`
+
 ```
 [Event "Lynn Stringer Memorial"]
 [Site "Victoria"]
@@ -90,6 +92,7 @@ python3 main.py round_1.pgn round_1_clock_times.txt > output.pgn
 ```
 
 - `data/scenario1/input.clk`
+
 ```
 1,60,60
 3,59,
@@ -139,6 +142,7 @@ python3 cli_merge_clock_times.py data/scenario1/input.pgn data/scenario1/input.c
 **Expected Output**
 
 - `data/scenario1/output.pgn`
+
 ```
 [Event "Lynn Stringer Memorial"]
 [Site "Victoria"]

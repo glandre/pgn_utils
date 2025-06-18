@@ -7,8 +7,8 @@ class PGN:
     self.game_formatter = game_formatter
 
   def entry_to_pgn(self, entry: Entry) -> str:
-    print(">>> entry_to_pgn > entry:")
-    pprint(entry)
+    # print(">>> entry_to_pgn > entry:")
+    # pprint(entry)
     # an entry contains annotations and a game
     annotations = self.annotations_to_pgn_part(entry['annotations'])
     game = self.game_formatter.format(entry['game'])
